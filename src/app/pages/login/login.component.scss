@@ -24,6 +24,17 @@
   transform: translate(-50%, -50%);
 }
 
+.icon-img
+{
+  font-size: 2rem;
+   width: 2rem;
+  height: 2rem;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .error-bi-input {
   display: inline;
 
@@ -31,4 +42,15 @@
 
 .not-error-input {
   display: none;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .google-icon {
+    width: 16px;
+    height: 16px;
+  }
 }

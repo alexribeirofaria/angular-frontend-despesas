@@ -1,7 +1,7 @@
 export * from './IAction';
 export * from './IAuth';
 export * from './ICategoria';
-export * from './IControleAcesso';
+export * from './IAcesso';
 export * from './IDespesa';
 export * from './IReceita';
 export * from './ITipoCategoria';
@@ -10,3 +10,4 @@ export * from './ILancamento';
 export * from './IUsuario';
 export * from './IImagemPerfil';
 export * from './ISaldo';
+export * from './IGoogleAuth';

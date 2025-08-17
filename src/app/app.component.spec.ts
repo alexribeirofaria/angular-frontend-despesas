@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app.routing.module';
-import { PrimeiroAcessoComponent } from './pages/primeiro-acesso/primeiro-acesso.component';
 import { AuthService } from './shared/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { AuthProvider } from './shared/provider/auth.provider';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
+import { AcessoComponent } from './pages/acesso/acesso.component';
 
 describe('AppComponent', () => {
   let app: AppComponent;
@@ -25,15 +24,14 @@ describe('AppComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockAuthService = jasmine.createSpyObj('AuthService', [ 'isAuthenticated']);
     TestBed.configureTestingModule({
-        declarations: [AppComponent, LoginComponent, PrimeiroAcessoComponent],
-        imports: [RouterTestingModule, BrowserModule, AppRoutingModule, CommonModule,  ReactiveFormsModule, HttpClientModule, FormsModule],
-        providers: [AuthService, AuthProvider,
-          { provide: Router, useValue: mockRouter },
-          { provide: AuthService, useValue: mockAuthService },
-            DateAdapter,
-            MatDatepickerIntl
-        ]
-    });
+    declarations: [AppComponent, LoginComponent],
+    imports: [BrowserModule, AppRoutingModule, CommonModule, ReactiveFormsModule, FormsModule, AcessoComponent],
+    providers: [AuthService, AuthProvider,
+        { provide: Router, useValue: mockRouter },
+        { provide: AuthService, useValue: mockAuthService },
+        DateAdapter,
+        MatDatepickerIntl, provideHttpClient(withInterceptorsFromDi())]
+});
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
     router = TestBed.inject(Router);

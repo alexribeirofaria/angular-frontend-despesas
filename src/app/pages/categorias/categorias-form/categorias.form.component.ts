@@ -8,7 +8,8 @@ import { CategoriaService } from '../../../shared/services/api';
 @Component({
   selector: 'app-categorias-form',
   templateUrl: './categorias.form.component.html',
-  styleUrls: ['./categorias.form.component.scss']
+  styleUrls: ['./categorias.form.component.scss'],
+  standalone: false
 })
 
 export class CategoriasFormComponent implements OnInit {
@@ -36,9 +37,9 @@ export class CategoriasFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoriatForm = this.formbuilder.group({
-      id: [0, Validators.required],
+      id: [0],
       descricao: ['', Validators.required],
-      idTipoCategoria: [0, Validators.required]
+      idTipoCategoria: [null, Validators.required]
     }) as FormGroup & ICategoria;
   }
 

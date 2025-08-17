@@ -7,8 +7,10 @@ import { ImagemPerfilService } from '../../../shared/services/api';
 @Component({
   selector: 'app-change-avatar',
   templateUrl: './change-avatar.component.html',
-  styleUrls: ['./change-avatar.component.scss']
+  styleUrls: ['./change-avatar.component.scss'],
+  standalone: false
 })
+
 export class ChangeAvatarComponent implements OnInit {
   @Input() handleAvatarUploaded: (event: Event) => void;
   formAvatar: FormGroup;
@@ -33,15 +35,14 @@ export class ChangeAvatarComponent implements OnInit {
     this.imagemPerfilService.getImagemPerfilUsuario()
       .subscribe({
         next: (response: IImagemPerfil) => {
-          if (response && response !== undefined && response!== null) {
+          if (response && response !== undefined && response!== null && response.url !== "" && response.url !== undefined && response.url !== null) {
             this.imagemPerfilUsuario = response;
           }
         },
         error: (errorMessage: string) => {
           this.modalAlert.open(AlertComponent, errorMessage, AlertType.Warning);
         }
-      });;
-  }
+      });  }
 
   handleAvatarUpload = (event: any): void => {
     const uploadedFile = event.target.files?.[0];
