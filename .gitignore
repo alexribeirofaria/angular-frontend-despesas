@@ -8,6 +8,7 @@
 
 # Node
 /node_modules
+**/node_modules
 npm-debug.log
 yarn-error.log
 
@@ -21,7 +22,12 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
-**/.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
 # Miscellaneous
 /.angular/cache
@@ -38,3 +44,6 @@ Thumbs.db
 .angular/**
 obj/**
 !sonar-project.properties
+**/www
+**/client_secret.json
+**/app-android/android/app/build

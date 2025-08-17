@@ -1,0 +1,27 @@
+{
+  "name": "android",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "add:android": "npx cap add android",
+    "build:mobile": "ng build --configuration=production-android --output-path=www",
+    "start:android": "npx cap sync android && npx cap run android"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "5.7.8",
+    "@capacitor/app": "5.0.8",
+    "@capacitor/cli": "5.7.8",
+    "@capacitor/core": "5.7.8",
+    "@capacitor/haptics": "5.0.8",
+    "@capacitor/keyboard": "5.0.9",
+    "@capacitor/status-bar": "5.0.8"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.1.5"
+  }
+}

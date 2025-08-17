@@ -5,11 +5,13 @@ on:
     branches:
       - master
       - develop
+      - hotfix/*
 
   pull_request:
-    types: [opened]
+    types: [opened, synchronize, reopened]
     branches:
       - master
+      - develop
 
 jobs:
   build_and_test:
@@ -20,14 +22,10 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Set up Node.js Ver. 21
-        uses: actions/setup-node@v3
-        with:
-          node-version: '21.*.*'
-
       - name: Install dependencies
         run: |
-          npm install -g @angular/core @angular/cli > /dev/null 2>&1
+          npm install npm@latest
+          npm install -g @angular/core@16 @angular/cli@16
           npm install
         continue-on-error: false
 
