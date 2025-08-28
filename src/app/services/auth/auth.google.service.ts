@@ -40,51 +40,14 @@ export class AuthGoogleService {
 
       this.initialized = true;
     } else {
-      console.error('Google API não carregada corretamente.');
+      console.error('Atualize a página e tente novamente!');
     }
-  }
-
-  handleGoogleLogin(): Observable<any> {
-    return new Observable<IAuth>((observer) => {
-      if (!this.isGoogleScriptLoaded()) {
-        observer.error(new Error('Google API não carregada.'));
-        return;
-      }
-
-      google.accounts.id.initialize({
-        client_id: this.clientId,
-        callback: (response: any) => {
-          if (response.credential) {
-            this.handleCredentialResponse(response)
-              .pipe(
-                map((res) => {
-                  if (res.authenticated) return res;
-                  throw new Error('Autenticação falhou');
-                }),
-                catchError((err) => throwError(() => new Error(err?.message || 'Erro desconhecido')))
-              )
-              .subscribe({
-                next: (auth) => {
-                  observer.next(auth);
-                  observer.complete();
-                },
-                error: (err) => observer.error(err)
-              });
-          } else {
-            observer.error(new Error('Erro ao fazer login com o Google: credencial inválida'));
-            observer.complete();
-          }
-        }
-      });
-
-      google.accounts.id.prompt();
-    });
   }
 
   private handleCredentialResponse(response: any): Observable<IAuth> {
     const userData = this.decodeJwt(response.credential);
     if (!userData.sub || !userData.email) {
-      throw new Error('Token JWT inválido ou incompleto');
+      throw new Error('Erro de autenticação!');
     }
     const authData: IGoogleAuth = {
       authenticated: true,
@@ -97,11 +60,11 @@ export class AuthGoogleService {
       nome: userData.given_name,
       sobreNome: userData.family_name,
       telefone: null,
-      email: userData.email      
+      email: userData.email
     };
 
     return this.acessoService.signInWithGoogleAccount(authData).pipe(
-      catchError(err => throwError(() => new Error(err?.message || 'Erro desconhecido handleCredentialResponse')))
+      catchError(err => throwError(() => new Error(err?.message || 'Erro de autenticação, atualize a págína tente novamente!')))
     );
   }
 
@@ -121,5 +84,42 @@ export class AuthGoogleService {
         .join('')
     );
     return JSON.parse(jsonPayload);
+  }
+
+  public handleGoogleLogin(): Observable<any> {
+    return new Observable<IAuth>((observer) => {
+      if (!this.isGoogleScriptLoaded()) {
+        observer.error(new Error('Google API não carregada.'));
+        return;
+      }
+
+      google.accounts.id.initialize({
+        client_id: this.clientId,
+        callback: (response: any) => {
+          if (response.credential) {
+            this.handleCredentialResponse(response)
+              .pipe(
+                map((res) => {
+                  if (res.authenticated) return res;
+                  throw new Error('Autenticação falhou');
+                }),
+                catchError((err) => throwError(() => new Error(err?.message || 'Erro de autenticação!')))
+              )
+              .subscribe({
+                next: (auth) => {
+                  observer.next(auth);
+                  observer.complete();
+                },
+                error: (err) => observer.error(err)
+              });
+          } else {
+            observer.error(new Error('Erro de autenticação!'));
+            observer.complete();
+          }
+        }
+      });
+
+      google.accounts.id.prompt();
+    });
   }
 }
