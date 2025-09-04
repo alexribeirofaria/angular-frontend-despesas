@@ -59,8 +59,8 @@ export class LoginComponent implements OnInit {
         }
       }),
       catchError((error) => {
-        if (error && typeof error.message === 'string') {
-          throw (error.message);
+        if (error && typeof error.error === 'string') {
+          throw (error.error);
         }
         throw (error);
       })
@@ -81,23 +81,9 @@ export class LoginComponent implements OnInit {
   }
 
   public onGoogleLoginClick(): void {
-    this.authProviderGoogleService.handleGoogleLogin().pipe(
-      map((response: IAuth) => {
-        if (response.authenticated) {
-          return this.authProviderService.createAccessToken(response);
-        } else {
-          throw response;
-        }
-      }),
-      catchError((error) => {
-        if (error && typeof error.message === 'string') {
-          throw error.message;
-        }
-        throw error;
-      })
-    ).subscribe({
-      next: (response: boolean) => {
-        if (response)
+    this.authProviderGoogleService.handleGoogleLogin().subscribe({
+      next: (auth: IAuth) => {
+        if (auth.authenticated)
           this.router.navigate(['/dashboard']);
       },
       error: (errorMessage: string) => {
